@@ -18,7 +18,7 @@ public class Todo {
     private String description;
     private Date createdDateTime;
     private Date updatedDateTime;
-    private Date dueDate;
+    private Date dueDateTime;
     private boolean archive;
 
     @ManyToOne(cascade = CascadeType.ALL)

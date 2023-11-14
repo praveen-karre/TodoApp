@@ -13,4 +13,6 @@ import java.util.Date;
 @AllArgsConstructor
 public class TodoFiltersDto {
     public Date dueDateTime;
+    public Date dueDateFrom;
+    public Date dueDateTo;
 }

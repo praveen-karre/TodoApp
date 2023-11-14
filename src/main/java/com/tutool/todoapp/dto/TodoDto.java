@@ -17,7 +17,7 @@ public class TodoDto {
     private String description;
     private Date createdDateTime;
     private Date updatedDateTime;
-    private Date dueDate;
+    private Date dueDateTime;
     private boolean archive;
     private UserDto user;
     private StatusDto status;

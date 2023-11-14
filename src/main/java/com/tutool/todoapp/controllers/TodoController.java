@@ -7,7 +7,6 @@ import com.tutool.todoapp.services.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -18,22 +17,27 @@ public class TodoController {
     public TodoService todoService;
 
     @GetMapping("/getAllTasks")
-    public List<TodoDto> getTodos() {
-        return todoService.getTodos();
+    public List<TodoDto> getAllTasks() {
+        return todoService.getAllTasks();
     }
 
-    @PostMapping("/getPreviousTasks")
-    public List<TodoDto> getPreviousTasks(@RequestBody TodoFiltersDto todoFiltersDto) {
-        return todoService.getPreviousTasks(todoFiltersDto.getDueDateTime());
+    @PostMapping("/getAllPreviousTasks")
+    public List<TodoDto> getAllPreviousTasksByDueDate(@RequestBody TodoFiltersDto todoFiltersDto) {
+        return todoService.getAllPreviousTasksByDueDate(todoFiltersDto);
     }
 
-    @PostMapping("/getUpcomingTasks")
-    public List<TodoDto> getUpcomingTasks(@RequestBody TodoFiltersDto todoFiltersDto) {
-        return todoService.getUpcomingTasks(todoFiltersDto.getDueDateTime());
+    @PostMapping("/getAllUpcomingTasks")
+    public List<TodoDto> getAllUpcomingTasksByDueDate(@RequestBody TodoFiltersDto todoFiltersDto) {
+        return todoService.getAllUpcomingTasksByDueDate(todoFiltersDto);
     }
 
     @PostMapping("/getTodayTasks")
-    public List<TodoDto> getTodayTasks(@RequestBody TodoFiltersDto todoFiltersDto) throws ParseException {
+    public List<TodoDto> getTodayTasks(@RequestBody TodoFiltersDto todoFiltersDto) {
         return todoService.getTodayTasks(todoFiltersDto.getDueDateTime());
+    }
+
+    @PostMapping("/getAllTasks/date-range")
+    public List<TodoDto> getAllTasksBetween(@RequestBody TodoFiltersDto todoFiltersDto) {
+        return todoService.getAllTasksBetween(todoFiltersDto);
     }
 }

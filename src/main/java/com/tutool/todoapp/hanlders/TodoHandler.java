@@ -21,7 +21,7 @@ public class TodoHandler {
                 description(todo.getDescription()).
                 createdDateTime(todo.getCreatedDateTime()).
                 updatedDateTime(todo.getUpdatedDateTime()).
-                dueDate(todo.getDueDate()).
+                dueDateTime(todo.getDueDateTime()).
                 user(UserHandler.mapUserToUserDto(todo.getUser())).
                 status(StatusHandler.mapStatusToStatusDto(todo.getStatus())).
                 subtasks(mapSubTasksToSubTaskDtos(todo.getSubtasks())).
