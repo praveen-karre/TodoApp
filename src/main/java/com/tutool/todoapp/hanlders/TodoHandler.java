@@ -28,18 +28,65 @@ public class TodoHandler {
                 build();
     }
 
+    public static List<Todo> mapTodosDtosToTodo(List<TodoDto> todoDtos) {
+        return todoDtos.stream().map(TodoHandler::mapTodoDtoToTodo).collect(Collectors.toList());
+    }
+
+
+    public static Todo mapTodoDtoToTodo(TodoDto todoDto) {
+        Todo todo = Todo.builder().
+                todoId(todoDto.getTodoId()).
+                title(todoDto.getTitle()).
+                description(todoDto.getDescription()).
+                createdDateTime(todoDto.getCreatedDateTime()).
+                updatedDateTime(todoDto.getUpdatedDateTime()).
+                dueDateTime(todoDto.getDueDateTime()).
+                user(UserHandler.mapUserDtoToUser(todoDto.getUser())).
+                status(StatusHandler.mapStatusDtoToStatus(todoDto.getStatus())).
+                subtasks(mapSubTasksDtosToSubTasks(todoDto.getSubtasks())).
+                build();
+        return todo;
+    }
+
 
     public static List<SubtaskDto> mapSubTasksToSubTaskDtos(List<Subtask> subTasks) {
-        return subTasks.stream().map(TodoHandler::mapSubtasktoSubtaskDto).collect(Collectors.toList());
+        if(subTasks == null) {
+            return null;
+        }
+        return subTasks.stream().
+                map(TodoHandler::mapSubtasktoSubtaskDto).collect(Collectors.toList());
     }
 
     public static SubtaskDto mapSubtasktoSubtaskDto(Subtask subtask) {
+        if(subtask == null) {
+            return null;
+        }
         return SubtaskDto.builder().subTaskId(subtask.getSubTaskId()).
                 title(subtask.getTitle()).
                 description(subtask.getDescription()).
                 comments(subtask.getComments()).
                 status(StatusHandler.mapStatusToStatusDto(subtask.getStatus())).
-                todoId(subtask.getTodo().getTodoId()).
                 build();
+    }
+
+    public static List<Subtask> mapSubTasksDtosToSubTasks(List<SubtaskDto> subTasksDtos) {
+        if(subTasksDtos == null) {
+            return null;
+        }
+        return subTasksDtos.stream()
+                .map(TodoHandler::mapSubtaskDtotoSubtask).collect(Collectors.toList());
+    }
+
+    public static Subtask mapSubtaskDtotoSubtask(SubtaskDto subtaskDto) {
+        if(subtaskDto == null) {
+            return null;
+        }
+         return Subtask.builder().subTaskId(subtaskDto.getSubTaskId()).
+                    title(subtaskDto.getTitle()).
+                    description(subtaskDto.getDescription()).
+                    comments(subtaskDto.getComments()).
+                    status(StatusHandler.mapStatusDtoToStatus(subtaskDto.getStatus())).
+                    //todo(Todo.builder().todoId(subtaskDto.getTodoId()).build()).
+                    build();
     }
 }

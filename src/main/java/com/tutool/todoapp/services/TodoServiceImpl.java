@@ -1,12 +1,16 @@
 package com.tutool.todoapp.services;
 
+import com.tutool.todoapp.dto.SubtaskDto;
 import com.tutool.todoapp.dto.TodoDto;
 import com.tutool.todoapp.dto.TodoFiltersDto;
 import com.tutool.todoapp.hanlders.TodoHandler;
+import com.tutool.todoapp.models.Subtask;
 import com.tutool.todoapp.models.Todo;
+import com.tutool.todoapp.repository.SubtaskRepository;
 import com.tutool.todoapp.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -15,16 +19,25 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@Transactional
 public class TodoServiceImpl implements TodoService {
 
 
     @Autowired
     public TodoRepository todoRepository;
 
+    @Autowired
+    public SubtaskRepository subtaskRepository;
+
     @Override
-    public List<TodoDto> getAllTasks() {
-        List<Todo> todos = todoRepository.findAll();
+    public List<TodoDto> getAllTasks(String userId) {
+        List<Todo> todos = todoRepository.findAllByTitleIsNotNullAndUser_UserId(userId);
         return TodoHandler.mapTodosToTodoDtos(todos);
+    }
+
+    @Override
+    public TodoDto getAllTasksById(Long taskId) {
+        return TodoHandler.mapTodoToTodoDto(todoRepository.findByTodoId(taskId));
     }
 
     @Override
@@ -78,6 +91,31 @@ public class TodoServiceImpl implements TodoService {
 
         List<Todo> todos = todoRepository.findByDueDateTimeBetweenOrderByDueDateTimeAsc(dueDateFrom, dueDateTo);
         return TodoHandler.mapTodosToTodoDtos(todos);
+    }
+
+    @Override
+    public TodoDto addOrEditTask(TodoFiltersDto todoFiltersDto) {
+        Todo todo = TodoHandler.mapTodoDtoToTodo(todoFiltersDto.getTodo());
+        todo = todoRepository.save(todo);
+        return TodoHandler.mapTodoToTodoDto(todo);
+    }
+
+    private List<Subtask> saveSubtasks(List<SubtaskDto> subtasksDto) {
+        List<Subtask> subtasks = TodoHandler.mapSubTasksDtosToSubTasks(subtasksDto);
+        return subtaskRepository.saveAll(subtasks);
+    }
+
+    @Override
+    public List<SubtaskDto> addOrEditSubtask(TodoFiltersDto todoFiltersDto) {
+        /*List<Subtask> subtasks = TodoHandler.mapSubTasksDtosToSubTasks(todoFiltersDto.getSubTasks());
+        subtasks = subtaskRepository.saveAll(subtasks);
+        return TodoHandler.mapSubTasksToSubTaskDtos(subtasks);*/
+        return null;
+    }
+
+    @Override
+    public void deleteTodo(Integer todoId) {
+        todoRepository.deleteByTodoId(todoId);
     }
 
 

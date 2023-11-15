@@ -15,4 +15,8 @@ public class UserHandler {
     public static UserDto mapUserToUserDto(User user) {
         return UserDto.builder().userId(user.getUserId()).password(user.getPassword()).role(user.getRole()).build();
     }
+
+    public static User mapUserDtoToUser(UserDto userDto) {
+        return User.builder().userId(userDto.getUserId()).password(userDto.getPassword()).role(userDto.getRole()).build();
+    }
 }

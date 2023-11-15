@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,4 +16,7 @@ public class TodoFiltersDto {
     public Date dueDateTime;
     public Date dueDateFrom;
     public Date dueDateTo;
+
+    public TodoDto todo;
+    public List<SubtaskDto> subTasks;
 }
